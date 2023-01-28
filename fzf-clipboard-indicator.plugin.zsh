@@ -12,11 +12,8 @@ fzf-item_clipboard-widget() {
   setopt localoptions pipefail no_aliases 2> /dev/null
   local item
   echo $list | sort -u | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} --reverse --bind=ctrl-z:ignore ${FZF_DEFAULT_OPTS-} ${FZF_CTRL_Y_OPTS-}" $(__fzfcmd) -m "$@" | while read item; do
-    echo -n "${(q)item} "
+    echo -n "${(q)item} " | xclip -selection c | echo "Copied"
   done
-  local ret=$?
-  echo
-  return $ret
 }
 zle     -N              fzf-item_clipboard-widget
 bindkey -M emacs '\ex'  fzf-item_clipboard-widget
